@@ -4,6 +4,7 @@ import { BundleTier, SubscriptionBundle } from '../domain/entities/subscription-
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserSubscription } from '../domain/entities/user-subscription.entity';
 import { CreateSubscriptionDto } from '../dtos/create-subscrtiption.dto';
+import { UpdateSubscriptionDto } from '../dtos/update-subscription.dto';
 
 @Injectable()
 export class SubscriptionsService {
@@ -124,5 +125,19 @@ export class SubscriptionsService {
       relations: { bundle: true },
       order: { startDate: 'DESC' },
     });
+  }
+  async updateSubscription(userId: string, id: string, dto: UpdateSubscriptionDto) {
+    const subscription = await this.userSubscriptionsRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!subscription) {
+      throw new BadRequestException('Subscription not found');
+    }
+
+    subscription.autoRenew = dto.autoRenew;
+    subscription.renewalDate = dto.autoRenew ? subscription.endDate : null;
+
+    return await this.userSubscriptionsRepository.save(subscription);
   }
 }

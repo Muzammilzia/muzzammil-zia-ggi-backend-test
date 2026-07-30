@@ -46,6 +46,26 @@ export default function SubscriptionsPage() {
       .finally(() => setIsLoading(false));
   }, []);
 
+  const toggleAutoRenew = async (subId: string, currentStatus: boolean) => {
+    try {
+      const newStatus = !currentStatus;
+      await fetchApi(`/subscriptions/${subId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ autoRenew: newStatus }),
+      });
+
+      setSubscriptions((subs) =>
+        subs.map((sub) =>
+          sub.id === subId
+            ? { ...sub, autoRenew: newStatus, renewalDate: newStatus ? sub.endDate : "" }
+            : sub
+        )
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update subscription");
+    }
+  };
+
   return (
     <div className="px-6 py-10">
       <div className="max-w-3xl mx-auto">
@@ -129,17 +149,36 @@ export default function SubscriptionsPage() {
                     <p className="text-gray-400">End date</p>
                     <p className="text-gray-700 mt-0.5">{formatDate(sub.endDate)}</p>
                   </div>
-                  <div>
-                    <p className="text-gray-400">Renews on</p>
-                    <p className="text-gray-700 mt-0.5">{formatDate(sub.renewalDate)}</p>
-                  </div>
+                  {sub.autoRenew && (
+                    <div>
+                        <p className="text-gray-400">Renews on</p>
+                        <p className="text-gray-700 mt-0.5">{formatDate(sub.renewalDate)}</p>
+                    </div>
+                  )}
                 </div>
 
-                <div className="mt-4 flex items-center gap-2 border-t border-gray-100 pt-4 text-sm text-gray-600">
-                  <span
-                    className={`h-2 w-2 rounded-full ${sub.autoRenew ? "bg-gray-900" : "bg-gray-300"}`}
-                  />
-                  Auto-renew is {sub.autoRenew ? "on" : "off"}
+                <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium text-gray-900">Auto-renew</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Automatically renews at the end of the billing cycle
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={sub.autoRenew}
+                    onClick={() => toggleAutoRenew(sub.id, sub.autoRenew)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      sub.autoRenew ? "bg-gray-900" : "bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        sub.autoRenew ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
                 </div>
               </div>
             ))}
