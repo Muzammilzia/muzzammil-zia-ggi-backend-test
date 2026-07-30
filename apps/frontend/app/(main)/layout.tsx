@@ -11,12 +11,12 @@ const NAV_LINKS = [
 ];
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const router = useRouter()
+  const router = useRouter();
   const pathname = usePathname();
 
   const handleSignOut = async () => {
-    localStorage.removeItem("access_token")
-    router.push('signin')
+    localStorage.removeItem("access_token");
+    router.push("signin");
   };
 
   return (

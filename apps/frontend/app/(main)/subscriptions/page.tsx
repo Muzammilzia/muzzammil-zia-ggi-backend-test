@@ -56,11 +56,7 @@ export default function SubscriptionsPage() {
       });
 
       setSubscriptions((subs) =>
-        subs.map((sub) =>
-          sub.id === subId
-            ? { ...sub, autoRenew: newStatus }
-            : sub
-        )
+        subs.map((sub) => (sub.id === subId ? { ...sub, autoRenew: newStatus } : sub))
       );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update subscription");
@@ -106,16 +102,11 @@ export default function SubscriptionsPage() {
         ) : (
           <div className="space-y-4">
             {subscriptions.map((sub) => (
-              <div
-                key={sub.id}
-                className="rounded-lg border border-gray-200 bg-white p-5"
-              >
+              <div key={sub.id} className="rounded-lg border border-gray-200 bg-white p-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-semibold text-gray-900">
-                        {sub.bundle.tier}
-                      </h2>
+                      <h2 className="text-base font-semibold text-gray-900">{sub.bundle.tier}</h2>
                       <span
                         className={`text-xs font-medium border rounded-full px-2 py-0.5 ${
                           sub.isActive
@@ -126,7 +117,9 @@ export default function SubscriptionsPage() {
                         {sub.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
-                    <p className="mt-1 text-sm text-gray-500">${sub.isYearly ? sub.bundle.price * 10 : sub.bundle.price}</p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      ${sub.isYearly ? sub.bundle.price * 10 : sub.bundle.price}
+                    </p>
                   </div>
 
                   <div className="text-right">
@@ -152,36 +145,36 @@ export default function SubscriptionsPage() {
                   </div>
                   {sub.autoRenew && (
                     <div>
-                        <p className="text-gray-400">Renews on</p>
-                        <p className="text-gray-700 mt-0.5">{formatDate(sub.renewalDate)}</p>
+                      <p className="text-gray-400">Renews on</p>
+                      <p className="text-gray-700 mt-0.5">{formatDate(sub.renewalDate)}</p>
                     </div>
                   )}
                 </div>
-                
+
                 {sub.bundle.tier !== BundleTier.FREE && (
-                    <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
+                  <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
                     <div className="text-sm text-gray-600">
-                        <p className="font-medium text-gray-900">Auto-renew</p>
-                        <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="font-medium text-gray-900">Auto-renew</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
                         Automatically renews at the end of the billing cycle
-                        </p>
+                      </p>
                     </div>
                     <button
-                        type="button"
-                        role="switch"
-                        aria-checked={sub.autoRenew}
-                        onClick={() => toggleAutoRenew(sub.id, sub.autoRenew)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      type="button"
+                      role="switch"
+                      aria-checked={sub.autoRenew}
+                      onClick={() => toggleAutoRenew(sub.id, sub.autoRenew)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                         sub.autoRenew ? "bg-gray-900" : "bg-gray-200"
-                        }`}
+                      }`}
                     >
-                        <span
+                      <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            sub.autoRenew ? "translate-x-6" : "translate-x-1"
+                          sub.autoRenew ? "translate-x-6" : "translate-x-1"
                         }`}
-                        />
+                      />
                     </button>
-                    </div>
+                  </div>
                 )}
               </div>
             ))}

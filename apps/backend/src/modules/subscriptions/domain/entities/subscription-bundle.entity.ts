@@ -1,19 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 export enum BundleTier {
-  FREE = 'Free',
-  BASIC = 'Basic',
-  PRO = 'Pro',
-  ENTERPRISE = 'Enterprise',
+  FREE = "Free",
+  BASIC = "Basic",
+  PRO = "Pro",
+  ENTERPRISE = "Enterprise",
 }
 
-@Entity('subscription_bundles')
+@Entity("subscription_bundles")
 export class SubscriptionBundle {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column({
-    type: 'enum',
+    type: "enum",
     enum: BundleTier,
     unique: true,
   })
@@ -22,7 +22,7 @@ export class SubscriptionBundle {
   @Column()
   maxMessages: number;
 
-  @Column('decimal')
+  @Column("decimal")
   price: number;
 
   @Column({ default: false })

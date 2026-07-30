@@ -6,7 +6,7 @@ import { fetchApi } from "../../../lib/api";
 import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -18,16 +18,16 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      const data = await fetchApi('/auth/signin', {
+      const data = await fetchApi("/auth/signin", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
 
       if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-        router.push('/chat');
+        localStorage.setItem("access_token", data.access_token);
+        router.push("/chat");
       } else {
-        throw new Error('No access token received');
+        throw new Error("No access token received");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -54,10 +54,7 @@ export default function SignInPage() {
           )}
 
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
@@ -72,10 +69,7 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input

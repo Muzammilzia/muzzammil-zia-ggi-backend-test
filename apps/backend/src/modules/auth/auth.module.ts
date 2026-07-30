@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import type { StringValue } from 'ms';
-import { UserModule } from '../user/user.module';
-import { AuthService } from './services/auth.service';
-import { AuthController } from './controllers/auth.controller';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import type { StringValue } from "ms";
+import { UserModule } from "../user/user.module";
+import { AuthService } from "./services/auth.service";
+import { AuthController } from "./controllers/auth.controller";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { SubscriptionsModule } from "../subscriptions/subscriptions.module";
 
 @Module({
   imports: [
@@ -16,9 +16,9 @@ import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: configService.get<string>("JWT_SECRET"),
         signOptions: {
-          expiresIn: (configService.get<string>('JWT_EXPIRATION') ?? '1d') as StringValue,
+          expiresIn: (configService.get<string>("JWT_EXPIRATION") ?? "1d") as StringValue,
         },
       }),
     }),
@@ -27,4 +27,4 @@ import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
   providers: [AuthService, JwtAuthGuard],
   exports: [AuthService, JwtAuthGuard, JwtModule],
 })
-export class AuthModule { }
+export class AuthModule {}

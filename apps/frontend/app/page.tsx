@@ -10,7 +10,5 @@ export default function Home() {
     router.replace("/signin");
   }, [router]);
 
-  return (
-    <></>
-  );
+  return <></>;
 }

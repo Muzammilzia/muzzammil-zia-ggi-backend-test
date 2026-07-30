@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../app.module';
-import { SubscriptionsService } from '../modules/subscriptions/services/subscriptions.service';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "../app.module";
+import { SubscriptionsService } from "../modules/subscriptions/services/subscriptions.service";
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -10,7 +10,7 @@ async function bootstrap() {
     const count = await subscriptionsService.processRenewals();
     console.log(`Successfully processed renewals for ${count} subscriptions.`);
   } catch (error) {
-    console.error('Error processing renewals:', error);
+    console.error("Error processing renewals:", error);
   } finally {
     await app.close();
   }

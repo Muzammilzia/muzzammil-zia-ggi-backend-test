@@ -1,10 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { BundleTier, SubscriptionBundle } from '../domain/entities/subscription-bundle.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserSubscription } from '../domain/entities/user-subscription.entity';
-import { CreateSubscriptionDto } from '../dtos/create-subscrtiption.dto';
-import { UpdateSubscriptionDto } from '../dtos/update-subscription.dto';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { Repository } from "typeorm";
+import { BundleTier, SubscriptionBundle } from "../domain/entities/subscription-bundle.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserSubscription } from "../domain/entities/user-subscription.entity";
+import { CreateSubscriptionDto } from "../dtos/create-subscrtiption.dto";
+import { UpdateSubscriptionDto } from "../dtos/update-subscription.dto";
 
 @Injectable()
 export class SubscriptionsService {
@@ -13,22 +13,18 @@ export class SubscriptionsService {
     private readonly subscriptionBundlesRepository: Repository<SubscriptionBundle>,
 
     @InjectRepository(UserSubscription)
-    private readonly userSubscriptionsRepository: Repository<UserSubscription>,
-  ) { }
+    private readonly userSubscriptionsRepository: Repository<UserSubscription>
+  ) {}
 
   private addMonthsClamped(date: Date, monthsToAdd: number): Date {
     const day = date.getDate();
-    const targetMonthDate = new Date(
-      date.getFullYear(),
-      date.getMonth() + monthsToAdd,
-      1,
-    );
+    const targetMonthDate = new Date(date.getFullYear(), date.getMonth() + monthsToAdd, 1);
 
     // Last valid day of the target month (handles Feb 28/29, 30-day months)
     const lastDayOfTargetMonth = new Date(
       targetMonthDate.getFullYear(),
       targetMonthDate.getMonth() + 1,
-      0,
+      0
     ).getDate();
 
     targetMonthDate.setDate(Math.min(day, lastDayOfTargetMonth));
@@ -36,10 +32,12 @@ export class SubscriptionsService {
   }
 
   async createSubscription(userId: string, dto: CreateSubscriptionDto) {
-    const bundle = await this.subscriptionBundlesRepository.findOne({ where: { id: dto.bundleId } })
+    const bundle = await this.subscriptionBundlesRepository.findOne({
+      where: { id: dto.bundleId },
+    });
 
     if (!bundle) {
-      throw new Error('Bundle not found');
+      throw new Error("Bundle not found");
     }
 
     const startDate = new Date();
@@ -53,7 +51,7 @@ export class SubscriptionsService {
       endDate,
       renewalDate,
       autoRenew: dto.autoRenew,
-      isYearly: dto.isYearly
+      isYearly: dto.isYearly,
     });
 
     return await this.userSubscriptionsRepository.save(subscription);
@@ -67,15 +65,11 @@ export class SubscriptionsService {
     });
 
     if (!bundle) {
-      throw new Error('Free bundle not found');
+      throw new Error("Free bundle not found");
     }
 
     const startDate = new Date();
-    const endDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth() + 1,
-      1,
-    );
+    const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
     const renewalDate = endDate;
 
     const userSubscription = this.userSubscriptionsRepository.create({
@@ -83,7 +77,7 @@ export class SubscriptionsService {
       bundleId: bundle.id,
       startDate,
       endDate,
-      renewalDate
+      renewalDate,
     });
 
     return await this.userSubscriptionsRepository.save(userSubscription);
@@ -93,28 +87,27 @@ export class SubscriptionsService {
     const subscriptions = await this.userSubscriptionsRepository.find({
       where: { userId, isActive: true },
       relations: { bundle: true },
-      order: { startDate: 'DESC' },
-    })
+      order: { startDate: "DESC" },
+    });
 
     const subscriptionToConsume = subscriptions.find((s) => s.bundle.tier === BundleTier.FREE);
 
     if (subscriptionToConsume) {
       if (subscriptionToConsume.bundle.maxMessages > subscriptionToConsume.usedQouta) {
-        subscriptionToConsume.usedQouta++
+        subscriptionToConsume.usedQouta++;
         return await this.userSubscriptionsRepository.save(subscriptionToConsume);
       }
     }
 
     for (const s of subscriptions) {
       if (s.bundle.maxMessages > s.usedQouta || s.bundle.isUnlimited) {
-        s.usedQouta++
+        s.usedQouta++;
         return await this.userSubscriptionsRepository.save(s);
       }
     }
 
-    throw new BadRequestException('Qouta limit reached')
+    throw new BadRequestException("Qouta limit reached");
   }
-
 
   async getBundles() {
     return await this.subscriptionBundlesRepository.find();
@@ -124,7 +117,7 @@ export class SubscriptionsService {
     return await this.userSubscriptionsRepository.find({
       where: { userId },
       relations: { bundle: true },
-      order: { startDate: 'DESC' },
+      order: { startDate: "DESC" },
     });
   }
   async updateSubscription(userId: string, id: string, dto: UpdateSubscriptionDto) {
@@ -133,7 +126,7 @@ export class SubscriptionsService {
     });
 
     if (!subscription) {
-      throw new BadRequestException('Subscription not found');
+      throw new BadRequestException("Subscription not found");
     }
 
     subscription.autoRenew = dto.autoRenew;

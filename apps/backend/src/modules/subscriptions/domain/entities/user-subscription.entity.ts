@@ -1,21 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../../../user/domain/entities/user.entity';
-import { SubscriptionBundle } from './subscription-bundle.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { User } from "../../../user/domain/entities/user.entity";
+import { SubscriptionBundle } from "./subscription-bundle.entity";
 
-@Entity('user_subscriptions')
+@Entity("user_subscriptions")
 export class UserSubscription {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: User;
 
   @Column()
   userId: string;
 
   @ManyToOne(() => SubscriptionBundle)
-  @JoinColumn({ name: 'bundleId' })
+  @JoinColumn({ name: "bundleId" })
   bundle: SubscriptionBundle;
 
   @Column()

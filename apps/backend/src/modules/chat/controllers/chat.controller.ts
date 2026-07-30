@@ -1,11 +1,11 @@
-import { Controller, Post, Body, Req, Get } from '@nestjs/common';
-import { ChatService } from '../services/chat.service';
-import type { Request } from 'express';
-import { AskQuestionDto } from '../dtos/ask-question.dto';
+import { Controller, Post, Body, Req, Get } from "@nestjs/common";
+import { ChatService } from "../services/chat.service";
+import type { Request } from "express";
+import { AskQuestionDto } from "../dtos/ask-question.dto";
 
-@Controller('chat')
+@Controller("chat")
 export class ChatController {
-  constructor(private readonly chatService: ChatService) { }
+  constructor(private readonly chatService: ChatService) {}
 
   @Post()
   async ask(@Req() req: Request, @Body() dto: AskQuestionDto) {

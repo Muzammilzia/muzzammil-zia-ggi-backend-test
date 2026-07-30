@@ -42,7 +42,7 @@ export default function ChatPage() {
     setQuestion("");
 
     try {
-      const data = await fetchApi('/chat', {
+      const data = await fetchApi("/chat", {
         method: "POST",
         body: JSON.stringify({ question: currentQuestion }),
       });
@@ -82,9 +82,7 @@ export default function ChatPage() {
               <div className="flex justify-start">
                 <div className="max-w-[80%] rounded-lg bg-white border border-gray-200 text-gray-900 px-4 py-2 text-sm">
                   {msg.answer}
-                  <div className="mt-1 text-[11px] text-gray-400">
-                    {msg.tokensUsed} tokens
-                  </div>
+                  <div className="mt-1 text-[11px] text-gray-400">{msg.tokensUsed} tokens</div>
                 </div>
               </div>
             </div>

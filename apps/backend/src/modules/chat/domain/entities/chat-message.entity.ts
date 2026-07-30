@@ -1,22 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../../../user/domain/entities/user.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { User } from "../../../user/domain/entities/user.entity";
 
-@Entity('chat_messages')
+@Entity("chat_messages")
 export class ChatMessage {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: User;
 
   @Column()
   userId: string;
 
-  @Column('text')
+  @Column("text")
   question: string;
 
-  @Column('text')
+  @Column("text")
   answer: string;
 
   @Column()

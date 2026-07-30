@@ -118,3 +118,4 @@ A standalone CLI script to process all active subscriptions:
 5. **Pagination** — Chat history and subscription lists are returned in full with no pagination, which will not scale.
 6. **Quota on Yearly Plans** — Yearly plan quota currently resets only on script run. A more robust design would track the quota window start date independently so it resets monthly regardless of the renewal cycle.
 7. **Frontend Auth Guard** — There is no client-side route guard. If the access token is missing or expired, the user should be redirected to `/signin` automatically rather than seeing a raw API error.
+8. **Frontend Components** - I implemented all functionality with in pages only, this could be made alot better by breaking them into interfaces, types, and seperate components. Also, we could make use of a state management library like Redux or Zustand to manage the state of the application.

@@ -81,9 +81,7 @@ export default function PlansPage() {
                 key={option}
                 onClick={() => setCycle(option)}
                 className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors capitalize ${
-                  cycle === option
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-600 hover:text-gray-900"
+                  cycle === option ? "bg-gray-900 text-white" : "text-gray-600 hover:text-gray-900"
                 }`}
               >
                 {option}

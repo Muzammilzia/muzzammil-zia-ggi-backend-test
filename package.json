@@ -15,7 +15,10 @@
     "start:frontend": "npm run start --workspace=frontend",
     "start:backend": "npm run start:prod --workspace=backend",
 
-    "lint": "npm run lint --workspaces",
+    "lint": "npm run lint:check --workspaces",
+    "lint:fix": "npm run lint --workspaces",
+    "format": "npm run format --workspaces",
+    "format:check": "npm run format:check --workspaces",
     "test": "npm run test --workspace=backend",
     "renew-subscriptions": "npm run renew-subscriptions --workspace=backend"
   },

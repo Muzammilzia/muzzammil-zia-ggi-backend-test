@@ -31,12 +31,12 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      await fetchApi('/auth/signup', {
-        method: 'POST',
+      await fetchApi("/auth/signup", {
+        method: "POST",
         body: JSON.stringify({ email, password }),
       });
 
-      router.push('/signin');
+      router.push("/signin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -49,9 +49,7 @@ export default function SignUpPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-semibold text-gray-900">Create account</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Sign up to get 3 free messages a month.
-          </p>
+          <p className="mt-1 text-sm text-gray-500">Sign up to get 3 free messages a month.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -60,12 +58,9 @@ export default function SignUpPage() {
               {error}
             </div>
           )}
-          
+
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
@@ -80,10 +75,7 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
