@@ -44,7 +44,7 @@ export class SubscriptionsService {
 
     const startDate = new Date();
     const endDate = this.addMonthsClamped(startDate, 1);
-    const renewalDate = dto.autoRenew ? this.addMonthsClamped(startDate, dto.isYearly ? 12 : 1) : null;
+    const renewalDate = this.addMonthsClamped(startDate, dto.isYearly ? 12 : 1);
 
     const subscription = this.userSubscriptionsRepository.create({
       userId,
@@ -137,16 +137,41 @@ export class SubscriptionsService {
     }
 
     subscription.autoRenew = dto.autoRenew;
-    if (dto.autoRenew) {
-      if (subscription.isYearly) {
-        subscription.renewalDate = this.addMonthsClamped(subscription.startDate, 12);
-      } else {
-        subscription.renewalDate = this.addMonthsClamped(subscription.startDate, 1);
-      }
-    } else {
-      subscription.renewalDate = null;
-    }
 
     return await this.userSubscriptionsRepository.save(subscription);
+  }
+
+  async processRenewals() {
+    const now = new Date();
+
+    const subscriptions = await this.userSubscriptionsRepository.find({
+      where: {
+        isActive: true,
+      },
+    });
+
+    const modifiedSubscriptions: UserSubscription[] = [];
+
+    for (const sub of subscriptions) {
+      if (sub.autoRenew) {
+        sub.startDate = sub.renewalDate;
+        sub.endDate = this.addMonthsClamped(sub.startDate, 1);
+        sub.renewalDate = this.addMonthsClamped(sub.startDate, sub.isYearly ? 12 : 1);
+        sub.usedQouta = 0;
+        modifiedSubscriptions.push(sub);
+      } else {
+        const expirationDate = new Date(sub.renewalDate);
+        if (now >= expirationDate) {
+          sub.isActive = false;
+          modifiedSubscriptions.push(sub);
+        }
+      }
+    }
+
+    if (modifiedSubscriptions.length > 0) {
+      await this.userSubscriptionsRepository.save(modifiedSubscriptions);
+    }
+
+    return modifiedSubscriptions.length;
   }
 }

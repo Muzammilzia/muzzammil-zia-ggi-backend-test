@@ -27,8 +27,8 @@ export class UserSubscription {
   @Column()
   endDate: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  renewalDate: Date | null;
+  @Column()
+  renewalDate: Date;
 
   @Column({ default: true })
   autoRenew: boolean;

@@ -50,7 +50,7 @@ export default function SubscriptionsPage() {
   const toggleAutoRenew = async (subId: string, currentStatus: boolean) => {
     try {
       const newStatus = !currentStatus;
-      const updated = await fetchApi(`/subscriptions/${subId}`, {
+      await fetchApi(`/subscriptions/${subId}`, {
         method: "PATCH",
         body: JSON.stringify({ autoRenew: newStatus }),
       });
@@ -58,7 +58,7 @@ export default function SubscriptionsPage() {
       setSubscriptions((subs) =>
         subs.map((sub) =>
           sub.id === subId
-            ? { ...sub, autoRenew: updated.autoRenew, renewalDate: updated.renewalDate }
+            ? { ...sub, autoRenew: newStatus }
             : sub
         )
       );
