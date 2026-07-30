@@ -58,7 +58,7 @@ export default function SubscriptionsPage() {
       setSubscriptions((subs) =>
         subs.map((sub) =>
           sub.id === subId
-            ? { ...sub, autoRenew: newStatus, renewalDate: newStatus ? updated.renewalDate : "" }
+            ? { ...sub, autoRenew: updated.autoRenew, renewalDate: updated.renewalDate }
             : sub
         )
       );

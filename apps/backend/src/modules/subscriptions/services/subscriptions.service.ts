@@ -138,7 +138,6 @@ export class SubscriptionsService {
 
     subscription.autoRenew = dto.autoRenew;
     if (dto.autoRenew) {
-      console.log(subscription.isYearly, 'subscription.isYearly')
       if (subscription.isYearly) {
         subscription.renewalDate = this.addMonthsClamped(subscription.startDate, 12);
       } else {
@@ -147,8 +146,6 @@ export class SubscriptionsService {
     } else {
       subscription.renewalDate = null;
     }
-
-    console.log(subscription.renewalDate)
 
     return await this.userSubscriptionsRepository.save(subscription);
   }
