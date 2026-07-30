@@ -16,11 +16,13 @@ export class ChatService {
   async askQuestion(userId: string, question: string) {
     await this.subscriptionsService.consumeQouta(userId);
 
+    const { answer, tokensUsed } = await this.simulateOpenAIResponse(question);
+
     const newMessage = this.chatRepository.create({
       userId,
       question,
-      answer: 'Mocked response from AI',
-      tokensUsed: Math.floor(Math.random() * 50) + 10,
+      answer,
+      tokensUsed,
     });
 
     await this.chatRepository.save(newMessage);
@@ -36,5 +38,10 @@ export class ChatService {
       where: { userId },
       order: { createdAt: 'ASC' },
     });
+  }
+
+  private async simulateOpenAIResponse(question: string) {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return { answer: 'Mocked response from AI', tokensUsed: Math.floor(Math.random() * 50) + 10, }
   }
 }
