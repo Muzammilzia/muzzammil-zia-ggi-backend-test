@@ -107,7 +107,7 @@ A standalone CLI script to process all active subscriptions:
 
 ---
 
-> PS: I had very limited time to scaffold this project and implemented a minimal but functional version.
+> PS: I had very limited time to scaffold this project as this came in weekday, so had to do it along with my job. As a result, I have implemented a minimal but functional version.
 
 ## Improvements that can be made
 
