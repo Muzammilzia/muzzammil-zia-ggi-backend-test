@@ -43,8 +43,8 @@ export class SubscriptionsService {
     }
 
     const startDate = new Date();
-    const endDate = this.addMonthsClamped(startDate, dto.isYearly ? 12 : 1);
-    const renewalDate = dto.autoRenew ? endDate : null;
+    const endDate = this.addMonthsClamped(startDate, 1);
+    const renewalDate = dto.autoRenew ? this.addMonthsClamped(startDate, dto.isYearly ? 12 : 1) : null;
 
     const subscription = this.userSubscriptionsRepository.create({
       userId,
@@ -52,7 +52,8 @@ export class SubscriptionsService {
       startDate,
       endDate,
       renewalDate,
-      autoRenew: dto.autoRenew
+      autoRenew: dto.autoRenew,
+      isYearly: dto.isYearly
     });
 
     return await this.userSubscriptionsRepository.save(subscription);
@@ -136,7 +137,18 @@ export class SubscriptionsService {
     }
 
     subscription.autoRenew = dto.autoRenew;
-    subscription.renewalDate = dto.autoRenew ? subscription.endDate : null;
+    if (dto.autoRenew) {
+      console.log(subscription.isYearly, 'subscription.isYearly')
+      if (subscription.isYearly) {
+        subscription.renewalDate = this.addMonthsClamped(subscription.startDate, 12);
+      } else {
+        subscription.renewalDate = this.addMonthsClamped(subscription.startDate, 1);
+      }
+    } else {
+      subscription.renewalDate = null;
+    }
+
+    console.log(subscription.renewalDate)
 
     return await this.userSubscriptionsRepository.save(subscription);
   }

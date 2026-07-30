@@ -36,6 +36,9 @@ export class UserSubscription {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false })
+  isYearly: boolean;
+
   @Column({ default: 0 })
   usedQouta: number;
 }

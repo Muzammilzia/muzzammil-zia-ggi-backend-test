@@ -24,6 +24,7 @@ interface UserSubscription {
   autoRenew: boolean;
   isActive: boolean;
   usedQouta: number;
+  isYearly: boolean;
 }
 
 function formatDate(dateStr: string) {
@@ -49,7 +50,7 @@ export default function SubscriptionsPage() {
   const toggleAutoRenew = async (subId: string, currentStatus: boolean) => {
     try {
       const newStatus = !currentStatus;
-      await fetchApi(`/subscriptions/${subId}`, {
+      const updated = await fetchApi(`/subscriptions/${subId}`, {
         method: "PATCH",
         body: JSON.stringify({ autoRenew: newStatus }),
       });
@@ -57,7 +58,7 @@ export default function SubscriptionsPage() {
       setSubscriptions((subs) =>
         subs.map((sub) =>
           sub.id === subId
-            ? { ...sub, autoRenew: newStatus, renewalDate: newStatus ? sub.endDate : "" }
+            ? { ...sub, autoRenew: newStatus, renewalDate: newStatus ? updated.renewalDate : "" }
             : sub
         )
       );
@@ -125,7 +126,7 @@ export default function SubscriptionsPage() {
                         {sub.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
-                    <p className="mt-1 text-sm text-gray-500">${sub.bundle.price}</p>
+                    <p className="mt-1 text-sm text-gray-500">${sub.isYearly ? sub.bundle.price * 10 : sub.bundle.price}</p>
                   </div>
 
                   <div className="text-right">
