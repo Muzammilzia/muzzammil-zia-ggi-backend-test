@@ -156,30 +156,32 @@ export default function SubscriptionsPage() {
                     </div>
                   )}
                 </div>
-
-                <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
-                  <div className="text-sm text-gray-600">
-                    <p className="font-medium text-gray-900">Auto-renew</p>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      Automatically renews at the end of the billing cycle
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={sub.autoRenew}
-                    onClick={() => toggleAutoRenew(sub.id, sub.autoRenew)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      sub.autoRenew ? "bg-gray-900" : "bg-gray-200"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        sub.autoRenew ? "translate-x-6" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
+                
+                {sub.bundle.tier !== BundleTier.FREE && (
+                    <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
+                    <div className="text-sm text-gray-600">
+                        <p className="font-medium text-gray-900">Auto-renew</p>
+                        <p className="text-xs text-gray-500 mt-0.5">
+                        Automatically renews at the end of the billing cycle
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        role="switch"
+                        aria-checked={sub.autoRenew}
+                        onClick={() => toggleAutoRenew(sub.id, sub.autoRenew)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        sub.autoRenew ? "bg-gray-900" : "bg-gray-200"
+                        }`}
+                    >
+                        <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            sub.autoRenew ? "translate-x-6" : "translate-x-1"
+                        }`}
+                        />
+                    </button>
+                    </div>
+                )}
               </div>
             ))}
           </div>
